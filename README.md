@@ -2,6 +2,8 @@
 
 **A human-led application workspace built for the agent-native web.**
 
+**Live demo:** [opirtunapp.vercel.app](https://opirtunapp.vercel.app/)
+
 OpirtunApp helps students and early-career candidates discover
 opportunities, understand why they qualify, prepare a strong application, and
 retain control of the final decision. It is a working Next.js application with
