@@ -4,6 +4,14 @@
 
 OpirtunApp
 
+## Live demo
+
+[https://opirtunapp.vercel.app/](https://opirtunapp.vercel.app/)
+
+## Source code
+
+[https://github.com/Gei-del/opirtunapp](https://github.com/Gei-del/opirtunapp)
+
 ## One-line description
 
 A WebMCP-native workspace where agents prepare opportunity applications and
