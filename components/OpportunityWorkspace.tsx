@@ -9,6 +9,12 @@ import { isSupabaseConfigured } from "@/lib/supabase";
 import { ApplicationDraft, OpportunityType } from "@/types/domain";
 import { Button, ConfirmDialog, Icon, ScoreRing } from "@/components/ui";
 
+function matchesQuery(text: string, query: string) {
+  const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  const normalizedText = text.toLowerCase();
+  return tokens.every((token) => normalizedText.includes(token));
+}
+
 const typeFilters: Array<"All" | OpportunityType> = ["All", "Scholarship", "Fellowship", "Internship", "Hackathon"];
 
 export function OpportunityWorkspace() {
@@ -26,10 +32,9 @@ export function OpportunityWorkspace() {
   const selected = demoOpportunities.find((item) => item.id === selectedId) ?? demoOpportunities[0];
   const match = useMemo(() => calculateMatch(demoCandidate, selected), [selected]);
   const filtered = useMemo(() => {
-    const normalized = query.trim().toLowerCase();
     return demoOpportunities.filter((item) => {
       const text = `${item.title} ${item.organization} ${item.summary}`.toLowerCase();
-      return (!normalized || text.includes(normalized)) && (type === "All" || item.type === type);
+      return matchesQuery(text, query) && (type === "All" || item.type === type);
     });
   }, [query, type]);
 
@@ -79,6 +84,23 @@ export function OpportunityWorkspace() {
     finally { setBusy(false); }
   };
 
+  const handleReview = async () => {
+    if (!activeDraft || activeDraft.motivation.trim().length < 20) {
+      setNotice("Add at least 20 characters before reviewing this application.");
+      return;
+    }
+    setBusy(true);
+    try {
+      const saved = await saveApplication(activeDraft);
+      setApplications((current) => current.map((item) => item.id === saved.id ? saved : item));
+      setConfirming(true);
+    } catch {
+      setNotice("Your latest edits could not be saved. Try again before submitting.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return <main className="app-shell">
     <header className="topbar">
       <a className="brand" href="#workspace" aria-label="OpirtunApp home">
@@ -91,7 +113,7 @@ export function OpportunityWorkspace() {
         <span className="divider" />
         <span>{isSupabaseConfigured() ? "Supabase connected" : "Secure demo mode"}</span>
       </div>
-      <button className="avatar" aria-label="Open candidate profile">LP</button>
+      <a className="avatar" href="#profile" aria-label="Open candidate profile">LP</a>
     </header>
 
     <aside className="rail" aria-label="Workspace navigation">
@@ -148,9 +170,10 @@ export function OpportunityWorkspace() {
           </div>
           {activeDraft?.opportunityId === selected.id ? <div className="draft-panel">
             <div className="draft-panel__heading"><span><Icon name="spark"/></span><div><p className="eyebrow">Prepared with agent support</p><h3>Application draft</h3></div></div>
-            <label>Motivation statement<textarea value={activeDraft.motivation} onChange={(event) => setActiveDraft({ ...activeDraft, motivation: event.target.value })} rows={6}/></label>
+            <label>Motivation statement<textarea value={activeDraft.motivation} onChange={(event) => setActiveDraft({ ...activeDraft, motivation: event.target.value })} rows={6} minLength={20} maxLength={600} aria-describedby="motivation-help"/></label>
+            <p className="draft-panel__help" id="motivation-help">{activeDraft.motivation.length}/600 characters · minimum 20</p>
             <p className="consent-note"><Icon name="check"/>The agent prepared this draft. Only you can confirm submission.</p>
-            <Button onClick={() => setConfirming(true)} disabled={activeDraft.status === "submitted"}>{activeDraft.status === "submitted" ? "Submitted" : <>Review and submit <Icon name="arrow"/></>}</Button>
+            <Button busy={busy} onClick={handleReview} disabled={activeDraft.status === "submitted" || activeDraft.motivation.trim().length < 20}>{activeDraft.status === "submitted" ? "Submitted" : <>Review and submit <Icon name="arrow"/></>}</Button>
           </div> : <div className="review__action"><Button busy={busy} onClick={handleStage}><Icon name="spark"/>Prepare application</Button><small>Creates a draft. Nothing is submitted yet.</small></div>}
         </aside>
       </div>
