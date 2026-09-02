@@ -15,6 +15,12 @@ function objectInput(input: unknown): Record<string, unknown> {
   return input as Record<string, unknown>;
 }
 
+function matchesQuery(text: string, query: string) {
+  const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  const normalizedText = text.toLowerCase();
+  return tokens.every((token) => normalizedText.includes(token));
+}
+
 export function useWebMCP(profile: CandidateProfile, opportunities: Opportunity[], actionsRef: RefObject<Actions>) {
   const [status, setStatus] = useState<"checking" | "available" | "unavailable" | "error">("checking");
 
@@ -46,10 +52,10 @@ export function useWebMCP(profile: CandidateProfile, opportunities: Opportunity[
         annotations: { readOnlyHint: true, untrustedContentHint: false },
         execute: (input) => {
           const values = objectInput(input);
-          const query = typeof values.query === "string" ? values.query.toLowerCase() : "";
+          const query = typeof values.query === "string" ? values.query : "";
           return opportunities.filter((item) => {
             const haystack = `${item.title} ${item.organization} ${item.summary}`.toLowerCase();
-            return (!query || haystack.includes(query)) && (!values.type || item.type === values.type) && (!values.remote_only || item.remote);
+            return matchesQuery(haystack, query) && (!values.type || item.type === values.type) && (!values.remote_only || item.remote);
           }).map(({ id, title, organization, type, deadline, remote }) => ({ id, title, organization, type, deadline, remote }));
         },
       }),
@@ -98,14 +104,6 @@ export function useWebMCP(profile: CandidateProfile, opportunities: Opportunity[
           findOpportunity(values.opportunity_id);
           return actionsRef.current?.stageApplication(values.opportunity_id, typeof values.motivation === "string" ? values.motivation : undefined);
         },
-      }),
-      register({
-        name: "list_application_drafts",
-        title: "List application drafts",
-        description: "Read the candidate's application drafts and statuses. Use it to summarize progress without changing any record.",
-        inputSchema: { type: "object", properties: {}, additionalProperties: false },
-        annotations: { readOnlyHint: true, untrustedContentHint: false },
-        execute: () => actionsRef.current?.listApplications() ?? [],
       }),
     ]).then(() => setStatus("available")).catch(() => setStatus("error"));
     return () => lifecycle.abort();
