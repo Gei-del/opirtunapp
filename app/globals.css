@@ -46,7 +46,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .status-dot--available { background: #20a36a; box-shadow: 0 0 0 4px #dff5e9; }
 .status-dot--error { background: var(--danger); }
 .divider { width: 1px; height: 16px; margin: 0 5px; background: var(--line); }
-.avatar { width: 36px; height: 36px; color: var(--ink); background: var(--saffron-soft); border: 1px solid #eacb8b; border-radius: 50%; font-weight: 750; }
+.avatar { display: grid; place-items: center; width: 36px; height: 36px; color: var(--ink); background: var(--saffron-soft); border: 1px solid #eacb8b; border-radius: 50%; font-weight: 750; text-decoration: none; }
 
 .rail { position: sticky; top: 72px; align-self: start; height: calc(100vh - 72px); padding: 32px 16px 22px; background: #edf2f9; border-right: 1px solid var(--line); }
 .rail__chapter { display: flex; gap: 10px; align-items: center; padding: 0 10px 22px; color: var(--ink-soft); text-transform: uppercase; font-size: 10px; letter-spacing: .1em; }
@@ -124,6 +124,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .draft-panel { margin-top: 24px; padding: 19px; background: #f7f9fd; border: 1px solid var(--line); border-radius: 11px; }
 .draft-panel__heading { display: flex; gap: 11px; align-items: center; }.draft-panel__heading > span { display: grid; place-items: center; width: 34px; height: 34px; color: var(--cobalt); background: var(--cobalt-soft); border-radius: 9px; }.draft-panel h3 { margin: 0; font: 600 17px Georgia, serif; }
 .draft-panel label { display: flex; flex-direction: column; gap: 7px; margin-top: 15px; font-size: 11px; font-weight: 700; }.draft-panel textarea { width: 100%; resize: none; padding: 11px; color: var(--ink); background: var(--paper); border: 1px solid var(--line-strong); border-radius: 8px; font-size: 12px; line-height: 1.5; }
+.draft-panel__help { margin: 6px 0 0; color: var(--ink-soft); font-size: 10px; text-align: right; }
 .consent-note { display: flex; gap: 7px; align-items: center; color: var(--mint-strong); font-size: 10px; }.consent-note .icon { width: 14px; }.draft-panel > .button { width: 100%; }
 .empty-state { min-height: 300px; display: grid; place-content: center; justify-items: center; padding: 30px; text-align: center; }.empty-state p { color: var(--ink-soft); font-size: 12px; }
 
