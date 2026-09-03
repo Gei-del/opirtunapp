@@ -6,7 +6,7 @@
 - `components/OpportunityWorkspace.tsx` owns search, selection, staging, and review.
 - `components/ui.tsx` owns buttons, badges, progress, and the confirmation dialog.
 - `hooks/useWebMCP.ts` owns tool registration and lifecycle cleanup.
-- `lib/repository.ts` owns persistence and demo fallback behavior.
+- `lib/repository.ts` owns persistence and local-first fallback behavior.
 
 ## Flow ledger
 
@@ -19,7 +19,7 @@
 
 ## Privacy and consent
 
-The MVP stores synthetic demo data locally unless Supabase environment values
+The MVP stores synthetic sample data locally unless Supabase environment values
 are configured. Agents may stage a draft but cannot provide human consent. The
 final submission dialog names the opportunity and consequence, focuses Cancel,
 closes on Escape, and restores focus.
