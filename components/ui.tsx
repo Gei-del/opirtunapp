@@ -26,12 +26,17 @@ export function ScoreRing({ score }: { score: number }) {
 
 export function ConfirmDialog({ open, title, description, onCancel, onConfirm, busy }: { open: boolean; title: string; description: string; onCancel: () => void; onConfirm: () => void; busy: boolean }) {
   const cancelRef = useRef<HTMLButtonElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
   useEffect(() => {
     if (!open) return;
+    previousFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     cancelRef.current?.focus();
     const onKeyDown = (event: KeyboardEvent) => { if (event.key === "Escape") onCancel(); };
     document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      previousFocusRef.current?.focus();
+    };
   }, [open, onCancel]);
   if (!open) return null;
   return <div className="dialog-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onCancel(); }}>
@@ -42,7 +47,7 @@ export function ConfirmDialog({ open, title, description, onCancel, onConfirm, b
       <p id="dialog-description">{description}</p>
       <div className="dialog__actions">
         <Button ref={cancelRef} variant="secondary" onClick={onCancel}>Keep as draft</Button>
-        <Button busy={busy} onClick={onConfirm}>Confirm submission</Button>
+        <Button busy={busy} onClick={onConfirm}>Mark as submitted</Button>
       </div>
     </section>
   </div>;
