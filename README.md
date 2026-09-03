@@ -33,7 +33,7 @@ evidence, edits the draft, and provides final consent.
 | `list_application_drafts` | Read | Returns the application trail and avoids duplicates |
 | `stage_application` | Prepare | Creates an editable draft without submitting it |
 
-The final **Confirm submission** action intentionally remains human-only. This
+The final **Mark as submitted** action intentionally remains human-only. This
 is a product decision, not a missing tool: an agent may prepare consequential
 work but cannot impersonate consent.
 
@@ -46,7 +46,7 @@ work but cannot impersonate consent.
 - Editable motivation statement with a consent checkpoint.
 - Application trail with safe retry behavior.
 - Responsive, keyboard-accessible interface designed toward WCAG 2.2 AA.
-- Local demo persistence with optional Supabase production persistence.
+- Local-first persistence with optional Supabase production persistence.
 
 ## Technology
 
@@ -65,8 +65,8 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-The app automatically enters secure demo mode when Supabase variables are not
-present. Demo mode is fully functional and persists drafts in local storage.
+When Supabase variables are not present, the app uses a fully functional
+local-first workspace and persists drafts in local storage.
 
 ## Connect Supabase
 
@@ -115,7 +115,7 @@ components/          Product workspace and shared UI primitives
 data/                Synthetic opportunity and candidate records
 hooks/               WebMCP registration and lifecycle
 lib/                 Explainable matching and persistence adapters
-supabase/            PostgreSQL schema and demo RLS policies
+supabase/            PostgreSQL schema and sample-data RLS policies
 types/               Domain and browser API declarations
 PRODUCT.md           Product, safety, and business decisions
 DESIGN.md            Durable visual direction
