@@ -87,7 +87,7 @@ export function useWebMCP(profile: CandidateProfile, opportunities: Opportunity[
       register({
         name: "list_application_drafts",
         title: "List application drafts",
-        description: "Read the candidate's application trail, including draft, ready, and submitted demo records. Use it to avoid preparing duplicate applications.",
+        description: "Read the candidate's application trail, including draft, ready, and submitted workspace records. Use it to avoid preparing duplicate applications.",
         inputSchema: { type: "object", properties: {}, additionalProperties: false },
         annotations: { readOnlyHint: true, untrustedContentHint: false },
         execute: async () => actionsRef.current?.listApplications() ?? [],
