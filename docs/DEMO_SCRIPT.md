@@ -43,10 +43,12 @@ is intentional.”
 Briefly show the tool table in the README and the Supabase schema.
 
 “The product uses Next.js and TypeScript, with Supabase persistence and Row Level
-Security when configured. A local demo adapter keeps the judging experience
+Security when configured. A local-first adapter keeps the judging experience
 reliable without credentials.”
 
 ## 2:25–2:40 — Close
 
 “WebMCP turns this from a website an agent can try to click into a workspace a
 person and agent can understand together. The agent prepares. The person decides.”
+
+End on the application trail with the **Submitted** status visible.
