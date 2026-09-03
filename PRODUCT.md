@@ -18,7 +18,7 @@ stage an application, and review every field before the person submits it.
 - Search and eligibility tools are read-only.
 - `stage_application` creates an editable draft; it does not submit externally.
 - Final submission is a visible human action in this MVP.
-- Demo records are synthetic and contain no sensitive personal information.
+- Sample records are synthetic and contain no sensitive personal information.
 
 ## Business model
 
