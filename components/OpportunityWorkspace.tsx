@@ -17,6 +17,13 @@ function matchesQuery(text: string, query: string) {
 
 const typeFilters: Array<"All" | OpportunityType> = ["All", "Scholarship", "Fellowship", "Internship", "Hackathon"];
 
+const agentStatusLabel = {
+  checking: "Connecting agent tools",
+  available: "Agent tools active",
+  unavailable: "Agent tools unavailable",
+  error: "Agent tools need attention",
+} as const;
+
 export function OpportunityWorkspace() {
   const [query, setQuery] = useState("");
   const [type, setType] = useState<(typeof typeFilters)[number]>("All");
@@ -79,7 +86,7 @@ export function OpportunityWorkspace() {
       setApplications((current) => current.map((item) => item.id === submitted.id ? submitted : item));
       setActiveDraft(submitted);
       setConfirming(false);
-      setNotice("Application submitted in the demo workspace. Consent recorded.");
+      setNotice("Application marked as submitted. Your confirmation is recorded.");
     } catch { setNotice("Submission was not completed. Your draft is still safe."); }
     finally { setBusy(false); }
   };
@@ -109,9 +116,9 @@ export function OpportunityWorkspace() {
       </a>
       <div className="topbar__status">
         <span className={`status-dot status-dot--${webMCPStatus}`} />
-        <span>WebMCP {webMCPStatus}</span>
+        <span>{agentStatusLabel[webMCPStatus]}</span>
         <span className="divider" />
-        <span>{isSupabaseConfigured() ? "Supabase connected" : "Secure demo mode"}</span>
+        <span>{isSupabaseConfigured() ? "Cloud sync active" : "Private workspace"}</span>
       </div>
       <a className="avatar" href="#profile" aria-label="Open candidate profile">LP</a>
     </header>
@@ -190,6 +197,6 @@ export function OpportunityWorkspace() {
     </section>
 
     <div className="live-region" role="status" aria-live="polite">{notice}</div>
-    <ConfirmDialog open={confirming} title={`Submit to ${selected.title}?`} description="This records the application as submitted in the demo workspace. Review the motivation statement before continuing." onCancel={() => setConfirming(false)} onConfirm={handleSubmit} busy={busy}/>
+    <ConfirmDialog open={confirming} title={`Mark ${selected.title} as submitted?`} description="This updates your application trail and records your confirmation in this workspace. Review the motivation statement before continuing." onCancel={() => setConfirming(false)} onConfirm={handleSubmit} busy={busy}/>
   </main>;
 }
