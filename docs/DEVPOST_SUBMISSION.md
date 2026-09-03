@@ -46,7 +46,7 @@ The application uses Next.js, React, TypeScript, and the imperative WebMCP API.
 `useWebMCP` registers page-scoped tools once and cleans them up with an
 `AbortController`. A deterministic matching engine maps profile evidence to
 requirements. Drafts persist through a repository adapter that supports
-Supabase/PostgreSQL with Row Level Security and a zero-setup local demo mode.
+Supabase/PostgreSQL with Row Level Security and a zero-setup local-first mode.
 
 ## Challenges
 
@@ -59,8 +59,21 @@ the tool surface. We also made every score explainable at the requirement level.
 - A working, non-trivial six-tool WebMCP implementation.
 - Shared visible state between the user interface and agent actions.
 - Explainable matching and duplicate-aware draft preparation.
-- A complete responsive product experience, not only a protocol demo.
-- Supabase-ready persistence with safe synthetic demo data.
+- A complete responsive product experience, not only a protocol experiment.
+- Supabase-ready persistence with safe synthetic sample data.
+
+## Testing instructions
+
+1. Open the live URL in ChatGPT's in-app browser or Chrome 149+ with WebMCP
+   testing enabled.
+2. Confirm that the page exposes six tools.
+3. Ask the agent: “Find remote opportunities related to AI, check the best
+   match, open it, and prepare an application draft. Do not submit anything.”
+4. Verify that the selected opportunity and prepared draft appear in the same
+   visible workspace.
+5. Edit the motivation statement and use the human-only checkpoint to mark the
+   application as submitted. Reload the page to confirm the application trail
+   persists.
 
 ## What we learned
 
